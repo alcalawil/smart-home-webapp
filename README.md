@@ -1,4 +1,7 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Smart home web app
+
+Web app using react that uses the pi-server API to interact with a raspberry pi
+
 
 ## Available Scripts
 
