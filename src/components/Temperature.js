@@ -38,11 +38,35 @@ class Temperature extends Component {
     this.state = {
       anchorEl: null,
       open: false,
-      temperature: 36,
+      temperature: '36°C',
       scale: 'celsius'
     };
   }
 
+  componentDidMount() {
+    this.getTemperature();
+  }
+
+  getTemperature = () => {
+    var messages = this.props.state.mqtt.getEvents();
+    messages.on('temperature', (res) => {
+      var temp = parseFloat(res.toString());
+      switch (this.state.scale) {
+        case 'fahrenheit':
+          temp = `${this.convertToFahrenheit(temp)}°F`;
+          break;
+        case 'kelvin':
+          temp = `${this.convertToKelvin(temp)}°K`;
+          break;
+        default:
+          temp = `${temp}°C`
+          break;
+      }
+      this.setState({
+        temperature: temp
+      });
+    });
+  }
   handleClick = event => {
     const { currentTarget } = event;
     this.setState(state => ({
@@ -56,12 +80,12 @@ class Temperature extends Component {
   };
 
   convertToFahrenheit = (celsius) => {
-    var result = 0; 
+    var result = 0;
     result = (celsius * 1.8) + 32;
     return result;
   }
   convertToKelvin = (celsius) => {
-    var result = 0; 
+    var result = 0;
     result = celsius + 273.15;
     return result;
   }
@@ -71,7 +95,7 @@ class Temperature extends Component {
     const id = open ? 'temperature-popper' : null;
     return (
       <div>
-        <Badge className={classes.margin} badgeContent={`${temperature}°C`} color="primary">
+        <Badge className={classes.margin} badgeContent={`${temperature}`} color="primary">
           <Fab color="primary" aria-label="Add" className={classes.fab}
             onClick={this.handleClick} size="small">
             <WbIncandescent />
