@@ -7,14 +7,14 @@ class MqttService {
     this.messagesEmitter = new EventEmitter();
   }
 
-  connect() {
+  connect(key,cert,ca,host,clientId) {
     // Connect mqtt with credentials (in case of needed, otherwise we can omit 2nd param)
     this.mqttClient = awsIot.device({
-      keyPath: '',
-      certPath: '',
-      caPath: '',
-      clientId: '',
-      host: ''
+      privateKey: key,
+      clientCert: cert,
+      caCert: ca,
+      clientId: clientId,
+      host: host
     });
 
     // Mqtt error calback

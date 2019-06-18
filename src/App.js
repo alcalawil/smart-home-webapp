@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import './App.css';
-import Grid from '@material-ui/core/Grid';
-import Toggle from './components/Toggle';
-import logo from './img/smart-home.png';
-import Configuration from './components/Configuration';
-import Temperature from './components/Temperature';
-import MqttService from './services/MqttService';
+import React, { Component } from "react";
+import "./App.css";
+import Grid from "@material-ui/core/Grid";
+import Toggle from "./components/Toggle";
+import logo from "./img/smart-home.png";
+import Configuration from "./components/Configuration";
+import Temperature from "./components/Temperature";
+import MqttService from "./services/MqttService";
 
 class App extends Component {
   constructor(props) {
@@ -14,25 +14,45 @@ class App extends Component {
       isToggleOn: true,
       username: '',
       urlApi: '',
-      mqtt: new MqttService()
+      mqtt: new MqttService(),
+      key: null,
+      cert: null,
+      ca: null,
+      clientId: '',
+      host: ''
     };
   }
 
-  componentDidMount() {
-    this.state.mqtt
-      .connect()
-      .then(() => {
-        console.log('connected');
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
+  componentDidMount() {}
 
   handleChange = name => event => {
     this.setState({
       [name]: event.target.value
     });
+  };
+
+  handleChangeCredentials = name => event => {
+    const reader = new FileReader();
+    const file = event.target.files[0];
+    reader.onloadend = () => {
+      var buffer = Buffer.from(reader.result);
+      this.setState({
+        [name]: buffer
+      });
+    };
+    reader.readAsDataURL(file);
+  };
+
+  handleConnect = () => {
+    const {key, cert, ca, clientId, host} = this.state;
+    this.state.mqtt
+      .connect(key,cert,ca,clientId,host)
+      .then(() => {
+        console.log("connected");
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   render() {
@@ -52,6 +72,8 @@ class App extends Component {
               <Configuration
                 state={this.state}
                 handleChange={this.handleChange}
+                handleChangeCredentials={this.handleChangeCredentials}
+                handleConnect={this.handleConnect}
               />
             </Grid>
             <Grid item xs={4}>
