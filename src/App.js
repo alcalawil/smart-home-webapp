@@ -4,8 +4,8 @@ import Grid from "@material-ui/core/Grid";
 import Toggle from "./components/Toggle";
 import logo from "./img/smart-home.png";
 import Configuration from "./components/Configuration";
-import Temperature from "./components/Temperature";
-import MqttService from "./services/MqttService";
+import DataSubscriber from './components/DataSubscriber';
+import Chart from "./components/Chart";
 
 class App extends Component {
   constructor(props) {
@@ -14,11 +14,6 @@ class App extends Component {
       isToggleOn: true,
       username: '',
       urlApi: '',
-      mqtt: new MqttService(),
-      key: null,
-      cert: null,
-      ca: null,
-      clientId: '',
       host: ''
     };
   }
@@ -68,7 +63,7 @@ class App extends Component {
             justify="center"
             alignItems="center"
           >
-            <Grid item xs={4}>
+            <Grid item xs={2}>
               <Configuration
                 state={this.state}
                 handleChange={this.handleChange}
@@ -76,11 +71,21 @@ class App extends Component {
                 handleConnect={this.handleConnect}
               />
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={2}>
               <Toggle state={this.state} />
             </Grid>
-            <Grid item xs={4}>
-              <Temperature state={this.state} />
+          </Grid>
+          <Grid
+            container
+            spacing={0}
+            direction="row"
+            justify="center"
+            alignItems="center"
+          >
+            <Grid item xs={12}>
+              <DataSubscriber url={this.state.urlApi}>
+                <Chart />
+              </DataSubscriber>
             </Grid>
           </Grid>
         </div>

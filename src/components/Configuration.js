@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import {
-    Fab, Popper, Fade, Paper, TextField, Typography,
-    FormControl, Input, InputLabel, Button
+    Fab, Popper, Fade, Paper, TextField, Typography
 } from "@material-ui/core";
-import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import { Settings } from '@material-ui/icons';
 
@@ -44,9 +42,8 @@ class Configuration extends Component {
     };
 
     render() {
-        const { urlApi, clientId, host } = this.props.state;
-        const { handleChange, classes, handleChangeCredentials,
-            handleConnect } = this.props;
+        const { urlApi } = this.props.state;
+        const { handleChange, classes } = this.props;
         const { anchorEl, open } = this.state;
         const id = open ? 'configuration-popper' : null;
         return (
@@ -69,71 +66,6 @@ class Configuration extends Component {
                                     onChange={handleChange('urlApi')}
                                     margin="normal"
                                 />
-                                <Typography variant="subtitle1" gutterBottom>
-                                    Asignar ID.
-                                </Typography>
-                                <TextField
-                                    id="clientId"
-                                    className={classes.textField}
-                                    value={clientId}
-                                    onChange={handleChange('clientId')}
-                                    margin="normal"
-                                />
-                                <Typography variant="subtitle1" gutterBottom>
-                                    Asignar host.
-                                </Typography>
-                                <TextField
-                                    id="host"
-                                    className={classes.textField}
-                                    value={host}
-                                    onChange={handleChange('host')}
-                                    margin="normal"
-                                />
-                                <FormControl
-                                    className={classNames(classes.margin, classes.textField)}
-                                >
-                                    <InputLabel htmlFor="key">
-                                        Cargar Key
-                                    </InputLabel>
-                                    <Input
-                                        accept=".key"
-                                        id="key"
-                                        multiple
-                                        type="file"
-                                        onChange={handleChangeCredentials('key')}
-                                    />
-                                </FormControl>
-                                <FormControl
-                                    className={classNames(classes.margin, classes.textField)}
-                                >
-                                    <InputLabel htmlFor="cert">
-                                        Cargar Certificado
-                                    </InputLabel>
-                                    <Input
-                                        accept=".crt"
-                                        id="cert"
-                                        multiple
-                                        type="file"
-                                        onChange={handleChangeCredentials('cert')}
-                                    />
-                                </FormControl>
-                                <FormControl
-                                    className={classNames(classes.margin, classes.textField)}
-                                >
-                                    <InputLabel htmlFor="ca">
-                                        Cargar CA
-                                    </InputLabel>
-                                    <Input
-                                        accept=".pem"
-                                        id="ca"
-                                        multiple
-                                        type="file"
-                                        onChange={handleChangeCredentials('ca')}
-                                    />
-                                </FormControl>
-                                <Button color="primary" variant="contained" onClick={handleConnect}>
-                                    Conectar
-                                </Button>
                             </Paper>
                         </Fade>
                     )}
